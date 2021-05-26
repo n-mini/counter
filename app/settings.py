@@ -79,24 +79,13 @@ WSGI_APPLICATION = 'app.wsgi.application' #プロジェクト名をxxxに入れ�
 # DEFAULT_FROM_EMAIL = 'no-reply@xxx.com'
 # SENDGRID_ECHO_TO_STDOUT=DEBUG
 
-if SQLITE:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME_SQL'),
-        'USER': env('DB_USER_SQL'),
-        'PASSWORD': env('DB_PASSWORD_SQL'),
-        'HOST': 'localhost',
-        'PORT': 3306 if DEBUG else env('DB_PORT_SQL'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-    }
+}
+
 
 
 
