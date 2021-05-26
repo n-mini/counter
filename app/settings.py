@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import environ
+import django_heroku
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -11,19 +12,21 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 # 環境変数の読み込み
 env = environ.Env(DEBUG=(bool,False))
-env.read_env(os.path.join(BASE_DIR,'.env'))
+IS_ON_HEROKU = env.bool('ON_HEROKU', default=False)
+
+if not IS_ON_HEROKU:
+    env.read_env(os.path.join(BASE_DIR,'.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get_value('DEBUG', cast = bool, default = True)
-SQLITE = env.get_value('SQLITE', cast = bool, default = True)
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = [env('IP_ADDRESS'), 'xxx.com', 'www.xxx.com', 'localhost']
+    ALLOWED_HOSTS = ['nao-counter.herokuapp.com']
 
 
 INSTALLED_APPS = [
@@ -45,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls' #プロジェクト名をxxxに入れる
@@ -145,10 +149,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/')
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
@@ -197,3 +202,6 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 15728640
 # GS_DEFAULT_ACL = env('STORAGE_ACL')
 # GOOGLE_CLOUD_STORAGE_BUCKET = '/' + GS_BUCKET_NAME
 # GOOGLE_CLOUD_STORAGE_URL = 'https://storage.googleapis.com' + GOOGLE_CLOUD_STORAGE_BUCKET
+
+
+django_heroku.settings(locals())
