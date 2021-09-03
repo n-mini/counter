@@ -3,30 +3,13 @@
 <section class="container mb-5" id="warpper">
         <div class="row mb-3">
             <div class="text-center mx-auto">
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                    <p>
-                        <legend style="text-align: center;display: block; " class="text-dark">{{ field.label }}</legend>
-                        {{ field }}
-                    </p>
-                    {% endfor %}
-                    <input type="submit" value="カウントする" class='btn btn-primary mb-5'>
-                </form>
+                <div id='app'>
+                    <textarea v-model="message" placeholder="入力してください" maxlength=680 class='form'style=" height:290px; width:65vw; font-size: 24px;"wrap="hard" ></textarea>
+                    <h2>[|[ message.length ]|]文字です</h2>
+                    <a type='submit' class='btn btn-primary mt-2' href="/" >リセット</a>
+                </div>
             </div>
-        </div>
-        <div class="text-center text-dark">
-            {% if text %}
-            <h3>{{ text }}文字です</h3>
-            {% else %}
-            <h3 class="">0文字です</h3>
-            {% endif %}
         </div>
     </div>
 </section>
-
-
-
-
-
 {% endblock %}

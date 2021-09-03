@@ -21,4 +21,18 @@ footer {
 
 .w-80 {
     width: 65vw;
+    height: 65vw;
+}
+
+.form::placeholder {
+  text-align: center;
+  top: 100px;
+}
+
+h2 {
+  font-size: 27px !important;
+}
+textarea{
+  resize: none;
+
 }
